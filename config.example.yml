@@ -1,0 +1,95 @@
+# config.example.yml
+#
+# Copy this file to config.yml and fill in your calendar URLs.
+# All filter fields are optional — omit any you don't need.
+#
+# The generated feed is written to output/filtered.ics and committed back
+# to the repository by the GitHub Actions workflow.  Subscribe to it via:
+#   https://raw.githubusercontent.com/<owner>/<repo>/<branch>/output/filtered.ics
+
+# ---------------------------------------------------------------------------
+# Output options
+# ---------------------------------------------------------------------------
+output:
+  # busy_only: when true every included event is redacted to show only
+  # "Busy" as the title, preserving only DTSTART and DTEND.  Use this to
+  # share availability without disclosing event details.
+  busy_only: false
+
+# ---------------------------------------------------------------------------
+# Global filters  (applied to every input calendar)
+# ---------------------------------------------------------------------------
+global_filters:
+  # title: filter on the event SUMMARY field.
+  #   include: keep only events whose title matches at least one pattern.
+  #   exclude: drop events whose title matches any pattern.
+  #   Patterns are case-insensitive regular expressions.
+  # title:
+  #   include:
+  #     - "Team Meeting"
+  #     - "Sprint.*"
+  #   exclude:
+  #     - "Cancelled"
+  #     - "\\[OOO\\]"
+
+  # description: filter on the event DESCRIPTION field (same syntax as title).
+  # description:
+  #   exclude:
+  #     - "confidential"
+
+  # location: filter on the event LOCATION field (same syntax as title).
+  # location:
+  #   include:
+  #     - "Conference Room A"
+  #     - "Building 2"
+
+  # creator: filter on the event ORGANIZER field (email or display name).
+  # creator:
+  #   include:
+  #     - "alice@example.com"
+  #   exclude:
+  #     - "noreply@"
+
+  # free_busy: keep only events with the specified transparency status.
+  #   BUSY  → TRANSP:OPAQUE  (event blocks calendar time — the default)
+  #   FREE  → TRANSP:TRANSPARENT  (event does not block time)
+  #   Omit this field (or list both values) to include all events.
+  # free_busy:
+  #   - "BUSY"
+
+  # all_day: filter by whether the event spans a full day.
+  #   true  → include only all-day events
+  #   false → exclude all-day events (include only timed events)
+  #   Omit (or set to null) to include both.
+  # all_day: false
+
+  # start_time: filter on the event's DTSTART value.
+  #   after:  include events that start on or after this ISO 8601 value.
+  #   before: include events that start strictly before this ISO 8601 value.
+  #   Dates without a time component are treated as midnight UTC.
+  # start_time:
+  #   after: "2025-01-01T00:00:00Z"
+
+  # end_time: filter on the event's DTEND value (same syntax as start_time).
+  # end_time:
+  #   before: "2026-01-01T00:00:00Z"
+
+# ---------------------------------------------------------------------------
+# Input calendars
+# ---------------------------------------------------------------------------
+calendars:
+  - url: "https://calendar.google.com/calendar/ical/REPLACE_ME/basic.ics"
+    name: "My Google Calendar"
+    # Optional per-calendar filters.  These OVERRIDE the matching global
+    # filter key for this calendar only; unspecified keys fall through to
+    # global_filters.
+    # filters:
+    #   title:
+    #     exclude:
+    #       - "Private"
+
+  # - url: "https://outlook.live.com/owa/calendar/REPLACE_ME/reachcalendar.ics"
+  #   name: "My Outlook Calendar"
+  #   filters:
+  #     free_busy:
+  #       - "BUSY"
