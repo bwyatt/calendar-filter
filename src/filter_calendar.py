@@ -268,7 +268,7 @@ def process_calendars(config: dict) -> Calendar:
         log.info("Fetching calendar: %s", name)
         try:
             cal = fetch_calendar(url)
-        except Exception as exc:  # noqa: BLE001
+        except (requests.RequestException, ValueError) as exc:
             log.error("Failed to fetch calendar '%s': %s", name, exc)
             continue
 

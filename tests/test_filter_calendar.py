@@ -507,8 +507,10 @@ class TestProcessCalendars:
                 {"url": "https://good.example.com/cal.ics"},
             ]
         }
+        import requests as req
+
         bad_response = MagicMock()
-        bad_response.raise_for_status.side_effect = Exception("connection error")
+        bad_response.raise_for_status.side_effect = req.RequestException("connection error")
         good_response = self._mock_get(MINIMAL_ICS)
         with patch(
             "filter_calendar.requests.get",
